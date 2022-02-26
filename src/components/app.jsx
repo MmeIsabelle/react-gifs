@@ -1,26 +1,45 @@
 import React, { Component } from 'react';
+import giphy from 'giphy-api';
+
 import SearchBar from './search_bar.jsx'
 import Gif from './gif.jsx'
 import GifList from './gif_list.jsx'
 
-// eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      gifs: [],
+      selectedGifId: "DICpUSU3ZFSzCnAQ9M"
+    }
+  }
+
+  search = (query) => {
+    giphy('YZf57dPfUyWwQZjVQXkFn65YCyoPTMgN').search({
+      q: query,
+      rating: 'g',
+      limit: 10
+    }, (err, res) => {
+      this.setState({
+        gifs: res.data
+      });
+    });
+  }
+
   render() {
-    const gifs = [
-      { id: "DICpUSU3ZFSzCnAQ9M" },
-      { id: "3fiw51MvIWcGjMhy9a" }
-    ];
     return (
       <div>
         <div className="left-scene">
-          <SearchBar />
+          <SearchBar search={this.search} />
           <div className="selected-gif">
-            <Gif id="DICpUSU3ZFSzCnAQ9M"/>
+            <Gif id={this.state.selectedGifId} />
           </div>
         </div>
         <div className="right-scene">
           <div className="gif-list">
-            <GifList gifs={gifs} />
+            <GifList gifs={this.state.gifs} />
           </div>
         </div>
       </div>
