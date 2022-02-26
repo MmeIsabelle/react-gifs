@@ -5,7 +5,7 @@ import Gif from './gif.jsx'
 class GifList extends Component {
   render() {
     return this.props.gifs.map(gif => {
-      return <Gif id={gif.id} key={gif.id} />;
+      return <Gif selected={this.props.selected} id={gif.id} key={gif.id} />;
     });
   }
 }
